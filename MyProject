@@ -1,0 +1,98 @@
+import java.sql.*;
+import java.util.*;
+
+class Appointment{
+
+void Storedetails(String u,String d,String t){
+try{
+Class.forName("org.h2.Driver");
+Connection c=DriverManager.getConnection("jdbc:h2:tcp://localhost/~/test","sa","");
+String sql="insert into userdetail2 values(?,?,?)";
+PreparedStatement ps=c.prepareStatement(sql);
+ps.setString(1,u); ps.setString(2,d); ps.setString(3,t);
+int res=ps.executeUpdate();
+if(res==0){
+System.out.println("rows affected");
+}
+}
+catch(Exception e){
+System.out.println(e);
+}}
+
+void retrieve_details(String n){
+try{
+System.out.println("welcome");
+Class.forName("org.h2.Driver");
+Connection c=DriverManager.getConnection("jdbc:h2:tcp://localhost/~/test","sa","");
+String sql="select * from userdetail2 where uname=?";
+PreparedStatement ps=c.prepareStatement(sql);
+ps.setString(1,n);
+ResultSet rs=ps.executeQuery();
+while(rs.next()){
+System.out.println("USERNAME"+ " "+"APPOINTMENT_DATE"+" "+"APPOINTMENT TIME");
+System.out.println(rs.getString(1)+"-"+rs.getString(2)+"-"+rs.getString(3));
+}}
+catch(Exception e){}
+
+}
+
+void retrieve_details_date(String d){
+try{
+System.out.println("welcome");
+Class.forName("org.h2.Driver");
+Connection c=DriverManager.getConnection("jdbc:h2:tcp://localhost/~/test","sa","");
+String sql="select * from userdetail2 where appointdate=?";
+PreparedStatement ps=c.prepareStatement(sql);
+ps.setString(1,d);
+ResultSet rs=ps.executeQuery();
+while(rs.next()){
+System.out.println("USERNAME"+ " "+"APPOINTMENT_DATE"+" "+"APPOINTMENT TIME");
+System.out.println(rs.getString(1)+"-"+rs.getString(2)+"-"+rs.getString(3));
+}}
+catch(Exception e){}
+}
+}
+class demo2{
+
+public static void main(String[] args){
+String uname,appointdate,appointtime;
+int choice; String option="yes";
+Scanner s=new Scanner(System.in);
+do{
+System.out.println("Welcome to L&T");
+System.out.println("We are providing you the below choices");
+System.out.println("1. Book Appointment");
+System.out.println("2. View Your Appointment");
+System.out.println("3. View All Appointment Booked");
+System.out.println("Enter your choice..");
+choice=s.nextInt();
+Appointment a=new Appointment();
+if(choice==1){
+System.out.println("Enter the name");
+uname=s.next();
+System.out.println("Enter the appointment date(yyyy-mm-dd)");
+appointdate=s.next(); 
+System.out.println("Enter the appointment time(hh:mm:ss)");
+appointtime=s.next();
+a.Storedetails(uname,appointdate,appointtime);
+}
+else if(choice==2){
+System.out.println("Enter the name");
+uname=s.next();
+a.retrieve_details(uname);
+}
+else if(choice==3){
+System.out.println("Enter the appointment date(yyyy-mm-dd)");
+appointdate=s.next(); 
+a.retrieve_details_date(appointdate);
+}
+else{
+System.out.println("Thank You for visiting L&T");
+}
+System.out.println("Do you want to continue(yes/no)");
+option=s.next();
+}
+while(option.equals("yes"));
+}
+
+}
